@@ -66,7 +66,8 @@ class BaseOptions:
             name += f"_{args.split}"
         args.checkpoint_path = f"checkpoints/{name}"
         args.log_path = f"logs/{name}"
-        args.result_path = f"results/{name}"
+        if not hasattr(args, 'result_path') or getattr(args, 'result_path', None) is None:
+            args.result_path = f"results/{name}"
         if hasattr(args, 'world_size'):
             args.batch_size = args.batch_size // args.world_size
             args.master_port = f'{10000 + random.randrange(1, 10000)}'

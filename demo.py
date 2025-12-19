@@ -290,7 +290,7 @@ def main(args):
     tracks_path = osp.join(args.result_path, "tracks.pth")
     create_folder(args.result_path)
 
-    video = read_video(osp.join(args.data_root, args.video_path), resolution=resolution).cuda() # , time_steps=20
+    video = read_video(osp.join(args.data_root, args.video_path), start_step=args.start_step, time_steps=args.time_steps, resolution=resolution).cuda() # , time_steps=20
 
     if not osp.exists(tracks_path) or args.recompute_tracks:
         with torch.no_grad():
@@ -335,5 +335,7 @@ def main(args):
 
 if __name__ == "__main__":
     args = DemoOptions().parse_args()
+    if args.model == "pt":
+        args.inference_mode = "tracks_at_motion_boundaries"
     main(args)
     print("Done.")
